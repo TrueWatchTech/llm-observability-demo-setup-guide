@@ -1,0 +1,17 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+COPY app.py   .
+
+RUN pip install fastapi uvicorn openai>=1.92.0 openlit httpx
+
+# Expose port 11434 so it matches the Ollama default
+EXPOSE 11434
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "11434"]
+
+RUN pip install fastapi uvicorn openlit httpx \
+    opentelemetry-sdk \
+    opentelemetry-exporter-otlp \
+    opentelemetry-instrumentation-fastapi \
+    opentelemetry-instrumentation-httpx

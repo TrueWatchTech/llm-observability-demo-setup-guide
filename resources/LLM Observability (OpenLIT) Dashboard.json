@@ -1,0 +1,2751 @@
+{
+  "title": "LLM Observability (OpenLIT) Dashboard",
+  "dashboardType": "CUSTOM",
+  "dashboardExtend": {
+    "groupUnfoldStatus": {
+      "Tokens": true,
+      "Overview": true,
+      "Requests": true
+    }
+  },
+  "dashboardMapping": [],
+  "dashboardOwnerType": "node",
+  "iconSet": {},
+  "dashboardBindSet": [],
+  "thumbnail": "",
+  "tagInfo": [
+    {
+      "name": "env:demo"
+    }
+  ],
+  "summary": "",
+  "main": {
+    "vars": [
+      {
+        "name": "App Name",
+        "seq": 0,
+        "datasource": "dataflux",
+        "code": "gen_ai_application_name",
+        "type": "TRACING",
+        "definition": {
+          "tag": "",
+          "field": "gen_ai_application_name",
+          "value": "",
+          "metric": "",
+          "object": "",
+          "defaultVal": {
+            "label": "",
+            "value": ""
+          }
+        },
+        "valueSort": "asc",
+        "hide": 0,
+        "isHiddenAsterisk": 0,
+        "multiple": true,
+        "includeStar": true,
+        "extend": {}
+      },
+      {
+        "name": "Model Name",
+        "seq": 1,
+        "datasource": "dataflux",
+        "code": "gen_ai_request_model",
+        "type": "TRACING",
+        "definition": {
+          "tag": "",
+          "field": "gen_ai_request_model",
+          "value": "",
+          "metric": "",
+          "object": "",
+          "defaultVal": {
+            "label": "",
+            "value": ""
+          }
+        },
+        "valueSort": "asc",
+        "hide": 0,
+        "isHiddenAsterisk": 0,
+        "multiple": true,
+        "includeStar": true,
+        "extend": {}
+      }
+    ],
+    "charts": [
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "bgColor": "",
+            "mappings": [],
+            "showLine": false,
+            "unitType": "global",
+            "fixedTime": "",
+            "fontColor": "",
+            "lineColor": "#3AB8FF",
+            "precision": "2",
+            "showTitle": true,
+            "titleDesc": "",
+            "downsample": "last",
+            "globalUnit": [],
+            "isSampling": true,
+            "compareType": "",
+            "openCompare": false,
+            "showLineAxis": false,
+            "timeInterval": "auto",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "showFieldMapping": false,
+            "sequenceChartType": "line",
+            "scientificNotation": true,
+            "openThousandsSeparator": true
+          },
+          "fixedTime": ""
+        },
+        "group": {
+          "name": "Tokens"
+        },
+        "name": "Total Tokens",
+        "pos": {
+          "h": 10,
+          "w": 7,
+          "x": 0,
+          "y": 0
+        },
+        "type": "singlestat",
+        "queries": [
+          {
+            "name": "",
+            "type": "singlestat",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(sum(`gen_ai_usage_total_tokens`))",
+              "code": "A",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": "gen_ai_usage_total_tokens",
+              "rollup": "",
+              "search": "",
+              "filters": [],
+              "groupBy": [],
+              "funcList": [],
+              "fieldFunc": "sum",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [
+              {
+                "key": "gen_ai_request_model",
+                "name": "gen_ai_request_model",
+                "alias": "Model Name"
+              },
+              {
+                "key": "sum(gen_ai_usage_input_tokens)",
+                "name": "sum(gen_ai_usage_input_tokens)",
+                "alias": "Prompt Tokens"
+              },
+              {
+                "key": "sum(gen_ai_usage_output_tokens)",
+                "name": "sum(gen_ai_usage_output_tokens)",
+                "alias": "Completion Tokens"
+              },
+              {
+                "key": "sum(gen_ai_usage_total_tokens)",
+                "name": "sum(gen_ai_usage_total_tokens)",
+                "alias": "Total Tokens"
+              }
+            ],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "slimit": 20,
+            "pageSize": 0,
+            "unitType": "global",
+            "fixedTime": "",
+            "precision": "2",
+            "queryMode": "toGroupColumn",
+            "showTitle": true,
+            "titleDesc": "",
+            "globalUnit": [],
+            "isSampling": true,
+            "pageEnable": false,
+            "showColumns": [],
+            "valMappings": [],
+            "aliasVersion": 2,
+            "timeInterval": "auto",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "currentChartType": "table",
+            "showFieldMapping": false,
+            "valColorMappings": [],
+            "scientificNotation": true,
+            "mainMeasurementSort": "top",
+            "mainMeasurementField": "sum(gen_ai_usage_input_tokens)",
+            "mainMeasurementLimit": 20,
+            "openThousandsSeparator": false,
+            "mainMeasurementQueryCode": "A"
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Tokens"
+        },
+        "name": "Token Usage by LLM",
+        "pos": {
+          "h": 10,
+          "w": 17,
+          "x": 7,
+          "y": 0
+        },
+        "type": "table",
+        "queries": [
+          {
+            "name": "",
+            "type": "table",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(sum(`gen_ai_usage_input_tokens`)) BY `gen_ai_request_model`",
+              "code": "A",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": [
+                "gen_ai_usage_input_tokens"
+              ],
+              "rollup": "",
+              "search": "",
+              "filters": [],
+              "groupBy": [
+                "gen_ai_request_model"
+              ],
+              "funcList": [],
+              "fieldFunc": "sum",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          },
+          {
+            "name": "",
+            "type": "table",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(sum(`gen_ai_usage_output_tokens`)) BY `gen_ai_request_model`",
+              "code": "B",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": [
+                "gen_ai_usage_output_tokens"
+              ],
+              "rollup": "",
+              "search": "",
+              "filters": [],
+              "groupBy": [
+                "gen_ai_request_model"
+              ],
+              "funcList": [],
+              "fieldFunc": "sum",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          },
+          {
+            "name": "",
+            "type": "table",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(sum(`gen_ai_usage_total_tokens`)) BY `gen_ai_request_model`",
+              "code": "C",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": [
+                "gen_ai_usage_total_tokens"
+              ],
+              "rollup": "",
+              "search": "",
+              "filters": [],
+              "groupBy": [
+                "gen_ai_request_model"
+              ],
+              "funcList": [],
+              "fieldFunc": "sum",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "bgColor": "",
+            "mappings": [],
+            "showLine": false,
+            "unitType": "global",
+            "fixedTime": "",
+            "fontColor": "",
+            "lineColor": "#3AB8FF",
+            "precision": "2",
+            "showTitle": true,
+            "titleDesc": "",
+            "downsample": "last",
+            "globalUnit": [
+              "custom",
+              "tokens/call"
+            ],
+            "isSampling": true,
+            "compareType": "",
+            "openCompare": false,
+            "showLineAxis": false,
+            "timeInterval": "auto",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "currentChartType": "singlestat",
+            "showFieldMapping": false,
+            "sequenceChartType": "line",
+            "scientificNotation": true,
+            "openThousandsSeparator": true
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Tokens"
+        },
+        "name": "Avg. Input Tokens per LLM Call",
+        "pos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 10
+        },
+        "type": "singlestat",
+        "queries": [
+          {
+            "name": "",
+            "type": "singlestat",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(avg(`gen_ai_usage_input_tokens`))",
+              "code": "A",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": "gen_ai_usage_input_tokens",
+              "rollup": "",
+              "search": "",
+              "filters": [],
+              "groupBy": [],
+              "funcList": [],
+              "fieldFunc": "avg",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "bgColor": "",
+            "mappings": [],
+            "showLine": false,
+            "unitType": "global",
+            "fixedTime": "",
+            "fontColor": "",
+            "lineColor": "#3AB8FF",
+            "precision": "2",
+            "showTitle": true,
+            "titleDesc": "",
+            "downsample": "last",
+            "globalUnit": [
+              "custom",
+              "tokens/call"
+            ],
+            "isSampling": true,
+            "compareType": "",
+            "openCompare": false,
+            "showLineAxis": false,
+            "timeInterval": "auto",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "currentChartType": "singlestat",
+            "showFieldMapping": false,
+            "sequenceChartType": "line",
+            "scientificNotation": true,
+            "openThousandsSeparator": true
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Tokens"
+        },
+        "name": "Avg. Output Tokens per LLM Call",
+        "pos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 10
+        },
+        "type": "singlestat",
+        "queries": [
+          {
+            "name": "",
+            "type": "singlestat",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(avg(`gen_ai_usage_output_tokens`))",
+              "code": "A",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": "gen_ai_usage_output_tokens",
+              "rollup": "",
+              "search": "",
+              "filters": [],
+              "groupBy": [],
+              "funcList": [],
+              "fieldFunc": "avg",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "slimit": 20,
+            "lineType": "linear",
+            "showLine": false,
+            "unitType": "global",
+            "chartType": "areaLine",
+            "fixedTime": "",
+            "isPercent": false,
+            "openStack": false,
+            "precision": "2",
+            "showLabel": false,
+            "showTitle": true,
+            "stackType": "time",
+            "titleDesc": "",
+            "globalUnit": [],
+            "isSampling": true,
+            "compareType": [],
+            "openCompare": false,
+            "yAxixMaxVal": null,
+            "yAxixMinVal": null,
+            "connectNulls": true,
+            "legendValues": "",
+            "timeInterval": "auto",
+            "legendPostion": "none",
+            "maxPointCount": null,
+            "sorderByOrder": "desc",
+            "xAxisShowType": "time",
+            "isTimeInterval": true,
+            "changeWorkspace": false,
+            "currentChartType": "sequence",
+            "showFieldMapping": false,
+            "onlyShowGroupName": false,
+            "scientificNotation": true,
+            "openThousandsSeparator": true,
+            "mainMeasurementQueryCode": "A"
+          },
+          "fixedTime": ""
+        },
+        "group": {
+          "name": "Tokens"
+        },
+        "name": "Avg. Input Tokens per LLM Call by App",
+        "pos": {
+          "h": 14,
+          "w": 12,
+          "x": 0,
+          "y": 32
+        },
+        "type": "sequence",
+        "queries": [
+          {
+            "name": "",
+            "type": "sequence",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(avg(`gen_ai_usage_input_tokens`)) BY `service`",
+              "code": "A",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": "gen_ai_usage_input_tokens",
+              "rollup": "",
+              "search": "",
+              "filters": [],
+              "groupBy": [
+                "service"
+              ],
+              "funcList": [],
+              "fieldFunc": "avg",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "slimit": 20,
+            "lineType": "linear",
+            "showLine": false,
+            "unitType": "global",
+            "chartType": "areaLine",
+            "fixedTime": "",
+            "isPercent": false,
+            "openStack": false,
+            "precision": "2",
+            "showLabel": false,
+            "showTitle": true,
+            "stackType": "time",
+            "titleDesc": "",
+            "globalUnit": [],
+            "isSampling": true,
+            "compareType": [],
+            "openCompare": false,
+            "yAxixMaxVal": null,
+            "yAxixMinVal": null,
+            "connectNulls": true,
+            "legendValues": "",
+            "timeInterval": "auto",
+            "legendPostion": "none",
+            "maxPointCount": null,
+            "sorderByOrder": "desc",
+            "xAxisShowType": "time",
+            "isTimeInterval": true,
+            "changeWorkspace": false,
+            "currentChartType": "sequence",
+            "showFieldMapping": false,
+            "onlyShowGroupName": false,
+            "scientificNotation": true,
+            "openThousandsSeparator": true,
+            "mainMeasurementQueryCode": "A"
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Tokens"
+        },
+        "name": "Avg. Output Tokens per LLM Call by App",
+        "pos": {
+          "h": 14,
+          "w": 12,
+          "x": 12,
+          "y": 32
+        },
+        "type": "sequence",
+        "queries": [
+          {
+            "name": "",
+            "type": "sequence",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(avg(`gen_ai_usage_output_tokens`)) BY `service`",
+              "code": "A",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": "gen_ai_usage_output_tokens",
+              "rollup": "",
+              "search": "",
+              "filters": [],
+              "groupBy": [
+                "service"
+              ],
+              "funcList": [],
+              "fieldFunc": "avg",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "slimit": 20,
+            "lineType": "linear",
+            "showLine": false,
+            "unitType": "global",
+            "chartType": "areaLine",
+            "fixedTime": "",
+            "isPercent": false,
+            "openStack": false,
+            "precision": "2",
+            "showLabel": false,
+            "showTitle": true,
+            "stackType": "time",
+            "titleDesc": "",
+            "globalUnit": [],
+            "isSampling": true,
+            "compareType": [],
+            "openCompare": false,
+            "yAxixMaxVal": null,
+            "yAxixMinVal": null,
+            "connectNulls": true,
+            "legendValues": "",
+            "timeInterval": "auto",
+            "legendPostion": "none",
+            "maxPointCount": null,
+            "sorderByOrder": "desc",
+            "xAxisShowType": "time",
+            "isTimeInterval": true,
+            "changeWorkspace": false,
+            "currentChartType": "sequence",
+            "showFieldMapping": false,
+            "onlyShowGroupName": false,
+            "scientificNotation": true,
+            "openThousandsSeparator": true,
+            "mainMeasurementQueryCode": "A"
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Tokens"
+        },
+        "name": "Avg. Input Tokens per LLM Call by Model",
+        "pos": {
+          "h": 14,
+          "w": 12,
+          "x": 0,
+          "y": 46
+        },
+        "type": "sequence",
+        "queries": [
+          {
+            "name": "",
+            "type": "sequence",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(avg(`gen_ai_usage_input_tokens`)) BY `gen_ai_request_model`",
+              "code": "A",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": "gen_ai_usage_input_tokens",
+              "rollup": "",
+              "search": "",
+              "filters": [],
+              "groupBy": [
+                "gen_ai_request_model"
+              ],
+              "funcList": [],
+              "fieldFunc": "avg",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "slimit": 20,
+            "lineType": "linear",
+            "showLine": false,
+            "unitType": "global",
+            "chartType": "areaLine",
+            "fixedTime": "",
+            "isPercent": false,
+            "openStack": false,
+            "precision": "2",
+            "showLabel": false,
+            "showTitle": true,
+            "stackType": "time",
+            "titleDesc": "",
+            "globalUnit": [],
+            "isSampling": true,
+            "compareType": [],
+            "openCompare": false,
+            "yAxixMaxVal": null,
+            "yAxixMinVal": null,
+            "connectNulls": true,
+            "legendValues": "",
+            "timeInterval": "auto",
+            "legendPostion": "none",
+            "maxPointCount": null,
+            "sorderByOrder": "desc",
+            "xAxisShowType": "time",
+            "isTimeInterval": true,
+            "changeWorkspace": false,
+            "currentChartType": "sequence",
+            "showFieldMapping": false,
+            "onlyShowGroupName": false,
+            "scientificNotation": true,
+            "openThousandsSeparator": true,
+            "mainMeasurementQueryCode": "A"
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Tokens"
+        },
+        "name": "Avg. Output Tokens per LLM Call by Model",
+        "pos": {
+          "h": 14,
+          "w": 12,
+          "x": 12,
+          "y": 46
+        },
+        "type": "sequence",
+        "queries": [
+          {
+            "name": "",
+            "type": "sequence",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(avg(`gen_ai_usage_output_tokens`)) BY `gen_ai_request_model`",
+              "code": "A",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": "gen_ai_usage_output_tokens",
+              "rollup": "",
+              "search": "",
+              "filters": [],
+              "groupBy": [
+                "gen_ai_request_model"
+              ],
+              "funcList": [],
+              "fieldFunc": "avg",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "slimit": 20,
+            "lineType": "linear",
+            "showLine": false,
+            "unitType": "global",
+            "chartType": "areaLine",
+            "fixedTime": "",
+            "isPercent": false,
+            "openStack": false,
+            "precision": "2",
+            "showLabel": false,
+            "showTitle": true,
+            "stackType": "time",
+            "titleDesc": "",
+            "globalUnit": [],
+            "isSampling": true,
+            "compareType": [],
+            "openCompare": false,
+            "yAxixMaxVal": null,
+            "yAxixMinVal": null,
+            "connectNulls": true,
+            "legendValues": "",
+            "timeInterval": "auto",
+            "legendPostion": "none",
+            "maxPointCount": null,
+            "sorderByOrder": "desc",
+            "xAxisShowType": "time",
+            "isTimeInterval": true,
+            "changeWorkspace": false,
+            "currentChartType": "sequence",
+            "showFieldMapping": false,
+            "onlyShowGroupName": false,
+            "scientificNotation": true,
+            "openThousandsSeparator": true,
+            "mainMeasurementQueryCode": "A"
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Tokens"
+        },
+        "name": "Avg. LLM Call Response Time by App (p99)",
+        "pos": {
+          "h": 14,
+          "w": 12,
+          "x": 0,
+          "y": 18
+        },
+        "type": "sequence",
+        "queries": [
+          {
+            "name": "",
+            "type": "sequence",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(percentile(`duration`, 99)) { `gen_ai_request_model` != 'null' } BY `service`",
+              "code": "A",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": "duration",
+              "rollup": "",
+              "search": "",
+              "filters": [
+                {
+                  "id": "dd64b5b0-71cb-11f0-a679-650d1a07bd08",
+                  "op": "!=",
+                  "name": "gen_ai_request_model",
+                  "type": "keyword",
+                  "logic": "and",
+                  "value": "null",
+                  "values": []
+                }
+              ],
+              "groupBy": [
+                "service"
+              ],
+              "funcList": [],
+              "fieldFunc": "p99",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [
+              {
+                "key": "gen_ai_request_model",
+                "name": "gen_ai_request_model",
+                "alias": "Request Model"
+              },
+              {
+                "key": "service",
+                "name": "service",
+                "alias": "App Name"
+              },
+              {
+                "key": "percentile(duration, 50)",
+                "name": "percentile(duration, 50)",
+                "alias": "P50"
+              },
+              {
+                "key": "percentile(duration, 75)",
+                "name": "percentile(duration, 75)",
+                "alias": "P75"
+              },
+              {
+                "key": "percentile(duration, 90)",
+                "name": "percentile(duration, 90)",
+                "alias": "P90"
+              },
+              {
+                "key": "percentile(duration, 99)",
+                "name": "percentile(duration, 99)",
+                "alias": "P99"
+              }
+            ],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "slimit": 20,
+            "pageSize": 0,
+            "unitType": "global",
+            "fixedTime": "",
+            "precision": "2",
+            "queryMode": "toGroupColumn",
+            "showTitle": true,
+            "titleDesc": "",
+            "globalUnit": [],
+            "isSampling": true,
+            "pageEnable": false,
+            "showColumns": [],
+            "valMappings": [],
+            "aliasVersion": 2,
+            "timeInterval": "auto",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "currentChartType": "table",
+            "showFieldMapping": false,
+            "valColorMappings": [],
+            "scientificNotation": true,
+            "mainMeasurementSort": "top",
+            "mainMeasurementField": "p50(duration)",
+            "mainMeasurementLimit": 20,
+            "openThousandsSeparator": false,
+            "mainMeasurementQueryCode": "A"
+          },
+          "fixedTime": ""
+        },
+        "group": {
+          "name": "Tokens"
+        },
+        "name": "LLM Call Response Time",
+        "pos": {
+          "h": 14,
+          "w": 12,
+          "x": 12,
+          "y": 18
+        },
+        "type": "table",
+        "queries": [
+          {
+            "name": "",
+            "type": "table",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(percentile(`duration`, 50)) { `gen_ai_request_model` != 'null' } BY `gen_ai_request_model`, `service`",
+              "code": "A",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": [
+                "duration"
+              ],
+              "rollup": "",
+              "search": "",
+              "filters": [
+                {
+                  "id": "601855c0-71cc-11f0-a679-650d1a07bd08",
+                  "op": "!=",
+                  "name": "gen_ai_request_model",
+                  "type": "keyword",
+                  "logic": "and",
+                  "value": "null",
+                  "values": []
+                }
+              ],
+              "groupBy": [
+                "gen_ai_request_model",
+                "service"
+              ],
+              "funcList": [],
+              "fieldFunc": "p50",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          },
+          {
+            "name": "",
+            "type": "table",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(percentile(`duration`, 75)) { `gen_ai_request_model` != 'null' } BY `gen_ai_request_model`, `service`",
+              "code": "B",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": [
+                "duration"
+              ],
+              "rollup": "",
+              "search": "",
+              "filters": [
+                {
+                  "id": "685abed0-71cc-11f0-a679-650d1a07bd08",
+                  "op": "!=",
+                  "name": "gen_ai_request_model",
+                  "type": "keyword",
+                  "logic": "and",
+                  "value": "null",
+                  "values": []
+                }
+              ],
+              "groupBy": [
+                "gen_ai_request_model",
+                "service"
+              ],
+              "funcList": [],
+              "fieldFunc": "p75",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          },
+          {
+            "name": "",
+            "type": "table",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(percentile(`duration`, 90)) { `gen_ai_request_model` != 'null' } BY `gen_ai_request_model`, `service`",
+              "code": "C",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": [
+                "duration"
+              ],
+              "rollup": "",
+              "search": "",
+              "filters": [
+                {
+                  "id": "7a687ae0-71cc-11f0-a679-650d1a07bd08",
+                  "op": "!=",
+                  "name": "gen_ai_request_model",
+                  "type": "keyword",
+                  "logic": "and",
+                  "value": "null",
+                  "values": []
+                }
+              ],
+              "groupBy": [
+                "gen_ai_request_model",
+                "service"
+              ],
+              "funcList": [],
+              "fieldFunc": "p90",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          },
+          {
+            "name": "",
+            "type": "table",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(percentile(`duration`, 99)) { `gen_ai_request_model` != 'null' } BY `gen_ai_request_model`, `service`",
+              "code": "D",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": [
+                "duration"
+              ],
+              "rollup": "",
+              "search": "",
+              "filters": [
+                {
+                  "id": "7f77a560-71cc-11f0-a679-650d1a07bd08",
+                  "op": "!=",
+                  "name": "gen_ai_request_model",
+                  "type": "keyword",
+                  "logic": "and",
+                  "value": "null",
+                  "values": []
+                }
+              ],
+              "groupBy": [
+                "gen_ai_request_model",
+                "service"
+              ],
+              "funcList": [],
+              "fieldFunc": "p99",
+              "fieldType": "long",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "slimit": 20,
+            "lineType": "linear",
+            "showLine": false,
+            "unitType": "global",
+            "chartType": "areaLine",
+            "fixedTime": "",
+            "isPercent": false,
+            "openStack": false,
+            "precision": "2",
+            "showLabel": false,
+            "showTitle": true,
+            "stackType": "time",
+            "titleDesc": "",
+            "globalUnit": [],
+            "isSampling": true,
+            "compareType": [],
+            "openCompare": false,
+            "yAxixMaxVal": null,
+            "yAxixMinVal": null,
+            "connectNulls": true,
+            "legendValues": "",
+            "timeInterval": "auto",
+            "legendPostion": "none",
+            "maxPointCount": null,
+            "sorderByOrder": "desc",
+            "xAxisShowType": "time",
+            "isTimeInterval": true,
+            "changeWorkspace": false,
+            "currentChartType": "sequence",
+            "showFieldMapping": false,
+            "onlyShowGroupName": false,
+            "scientificNotation": true,
+            "openThousandsSeparator": true,
+            "mainMeasurementQueryCode": "B"
+          },
+          "fixedTime": ""
+        },
+        "group": {
+          "name": "Tokens"
+        },
+        "name": "LLM Span Error Rate",
+        "pos": {
+          "h": 15,
+          "w": 12,
+          "x": 0,
+          "y": 60
+        },
+        "type": "sequence",
+        "queries": [
+          {
+            "name": "",
+            "type": "sequence",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "eval(A/B, A=\"T::RE(`.*`):(count(`*`)) { `status` = 'error' and `gen_ai_request_model` != 'null' } BY `gen_ai_request_model`\", B=\"T::RE(`.*`):(count(`*`)) { `gen_ai_request_model` != 'null' } BY `gen_ai_request_model`\")",
+              "code": "B",
+              "type": "expression",
+              "alias": "",
+              "children": [
+                {
+                  "q": "T::RE(`.*`):(count(`*`)) { `status` = 'error' and `gen_ai_request_model` != 'null' } BY `gen_ai_request_model`",
+                  "code": "A",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "*",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [
+                    {
+                      "id": "dfa826f0-71d4-11f0-a679-650d1a07bd08",
+                      "op": "=",
+                      "name": "status",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "error",
+                      "values": []
+                    },
+                    {
+                      "id": "e9944860-71d4-11f0-a679-650d1a07bd08",
+                      "op": "!=",
+                      "name": "gen_ai_request_model",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "null",
+                      "values": []
+                    }
+                  ],
+                  "groupBy": [
+                    "gen_ai_request_model"
+                  ],
+                  "funcList": [],
+                  "fieldFunc": "count",
+                  "fieldType": "keyword",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                },
+                {
+                  "q": "T::RE(`.*`):(count(`*`)) { `gen_ai_request_model` != 'null' } BY `gen_ai_request_model`",
+                  "code": "B",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "*",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [
+                    {
+                      "id": "f4fafbe0-71d4-11f0-a679-650d1a07bd08",
+                      "op": "!=",
+                      "name": "gen_ai_request_model",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "null",
+                      "values": []
+                    }
+                  ],
+                  "groupBy": [
+                    "gen_ai_request_model"
+                  ],
+                  "funcList": [],
+                  "fieldFunc": "count",
+                  "fieldType": "keyword",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                }
+              ],
+              "funcList": [],
+              "expression": "A/B"
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [
+              {
+                "value": [
+                  "80"
+                ],
+                "bgColor": "#57CECF",
+                "fontColor": "#000000",
+                "lineColor": "",
+                "operation": ">="
+              }
+            ],
+            "bgColor": "",
+            "mappings": [],
+            "showLine": true,
+            "unitType": "global",
+            "fixedTime": "",
+            "fontColor": "",
+            "lineColor": "#3AB8FF",
+            "precision": "2",
+            "showTitle": true,
+            "titleDesc": "This chart displays the percentage of successful gen_ai_request_model operations (where status is not 'error') out of all gen_ai_request_model operations. Calculated as (successful requests / total requests) × 100 to show the success rate of AI model operations.",
+            "downsample": "last",
+            "globalUnit": [
+              "percent",
+              "percent"
+            ],
+            "isSampling": true,
+            "compareType": "",
+            "openCompare": false,
+            "showLineAxis": true,
+            "timeInterval": "auto",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "currentChartType": "singlestat",
+            "showFieldMapping": false,
+            "sequenceChartType": "line",
+            "scientificNotation": true,
+            "openThousandsSeparator": true
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Overview"
+        },
+        "name": "Trace Success Rate",
+        "pos": {
+          "h": 18,
+          "w": 6,
+          "x": 0,
+          "y": 0
+        },
+        "type": "singlestat",
+        "queries": [
+          {
+            "name": "",
+            "type": "singlestat",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "eval((A/B)*100, A=\"T::RE(`.*`):(count(`*`)) { `gen_ai_request_model` != 'null' and `status` != 'error' }\", B=\"T::RE(`.*`):(count(`*`)) { `gen_ai_request_model` != 'null' }\")",
+              "code": "A",
+              "type": "expression",
+              "alias": "",
+              "children": [
+                {
+                  "q": "T::RE(`.*`):(count(`*`)) { `gen_ai_request_model` != 'null' and `status` != 'error' }",
+                  "code": "A",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "*",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [
+                    {
+                      "id": "c2ac2640-71d5-11f0-a679-650d1a07bd08",
+                      "op": "!=",
+                      "name": "gen_ai_request_model",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "null",
+                      "values": []
+                    },
+                    {
+                      "id": "d4bd3db0-71d5-11f0-a679-650d1a07bd08",
+                      "op": "!=",
+                      "name": "status",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "error",
+                      "values": []
+                    }
+                  ],
+                  "groupBy": [],
+                  "fieldFunc": "count",
+                  "fieldType": "keyword",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                },
+                {
+                  "q": "T::RE(`.*`):(count(`*`)) { `gen_ai_request_model` != 'null' }",
+                  "code": "B",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "*",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [
+                    {
+                      "id": "e8077160-71d5-11f0-a679-650d1a07bd08",
+                      "op": "!=",
+                      "name": "gen_ai_request_model",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "null",
+                      "values": []
+                    },
+                    {
+                      "id": "ecd1cab0-71d5-11f0-a679-650d1a07bd08",
+                      "op": "=",
+                      "name": "",
+                      "logic": "and",
+                      "value": "",
+                      "values": []
+                    }
+                  ],
+                  "groupBy": [],
+                  "funcList": [],
+                  "fieldFunc": "count",
+                  "fieldType": "keyword",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                }
+              ],
+              "funcList": [],
+              "expression": "(A/B)*100"
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [
+              {
+                "value": [
+                  "40"
+                ],
+                "bgColor": "#57CECF",
+                "fontColor": "#000000",
+                "lineColor": "",
+                "operation": "<="
+              }
+            ],
+            "bgColor": "",
+            "mappings": [],
+            "showLine": true,
+            "unitType": "global",
+            "fixedTime": "",
+            "fontColor": "",
+            "lineColor": "#3AB8FF",
+            "precision": "2",
+            "showTitle": true,
+            "titleDesc": "This chart displays the percentage of failed Gen AI requests (status = 'error') out of all Gen AI requests, calculated as (A/B)*100 where A is the count of error requests and B is the total count of requests. The data filters requests where 'gen_ai_request_model' is not null.",
+            "downsample": "last",
+            "globalUnit": [
+              "percent",
+              "percent"
+            ],
+            "isSampling": true,
+            "compareType": "",
+            "openCompare": false,
+            "showLineAxis": true,
+            "timeInterval": "auto",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "currentChartType": "singlestat",
+            "showFieldMapping": false,
+            "sequenceChartType": "line",
+            "scientificNotation": true,
+            "openThousandsSeparator": true
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Overview"
+        },
+        "name": "Trace Error Rate",
+        "pos": {
+          "h": 18,
+          "w": 6,
+          "x": 6,
+          "y": 0
+        },
+        "type": "singlestat",
+        "queries": [
+          {
+            "name": "",
+            "type": "singlestat",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "eval((A/B)*100, A=\"T::RE(`.*`):(count(`*`)) { `gen_ai_request_model` != 'null' and `status` = 'error' }\", B=\"T::RE(`.*`):(count(`*`)) { `gen_ai_request_model` != 'null' }\")",
+              "code": "A",
+              "type": "expression",
+              "alias": "",
+              "children": [
+                {
+                  "q": "T::RE(`.*`):(count(`*`)) { `gen_ai_request_model` != 'null' and `status` = 'error' }",
+                  "code": "A",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "*",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [
+                    {
+                      "id": "c2ac2640-71d5-11f0-a679-650d1a07bd08",
+                      "op": "!=",
+                      "name": "gen_ai_request_model",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "null",
+                      "values": []
+                    },
+                    {
+                      "id": "d4bd3db0-71d5-11f0-a679-650d1a07bd08",
+                      "op": "=",
+                      "name": "status",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "error",
+                      "values": []
+                    }
+                  ],
+                  "groupBy": [],
+                  "fieldFunc": "count",
+                  "fieldType": "keyword",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                },
+                {
+                  "q": "T::RE(`.*`):(count(`*`)) { `gen_ai_request_model` != 'null' }",
+                  "code": "B",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "*",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [
+                    {
+                      "id": "e8077160-71d5-11f0-a679-650d1a07bd08",
+                      "op": "!=",
+                      "name": "gen_ai_request_model",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "null",
+                      "values": []
+                    },
+                    {
+                      "id": "ecd1cab0-71d5-11f0-a679-650d1a07bd08",
+                      "op": "=",
+                      "name": "",
+                      "logic": "and",
+                      "value": "",
+                      "values": []
+                    }
+                  ],
+                  "groupBy": [],
+                  "funcList": [],
+                  "fieldFunc": "count",
+                  "fieldType": "keyword",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                }
+              ],
+              "funcList": [],
+              "expression": "(A/B)*100"
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "bgColor": "",
+            "mappings": [],
+            "showLine": false,
+            "unitType": "global",
+            "fixedTime": "",
+            "fontColor": "",
+            "lineColor": "#3AB8FF",
+            "precision": "2",
+            "showTitle": true,
+            "titleDesc": "This chart displays the total count of trace IDs grouped by Gen AI application names. The data is filtered to exclude any entries where the Gen AI application name is 'null'. The series_sum function is used to sum up the counts across the selected time range, providing an aggregated view of trace ID distribution across different Gen AI applications.",
+            "downsample": "last",
+            "globalUnit": [
+              "custom",
+              "traces"
+            ],
+            "isSampling": true,
+            "compareType": "",
+            "openCompare": false,
+            "showLineAxis": false,
+            "timeInterval": "auto",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "currentChartType": "singlestat",
+            "showFieldMapping": false,
+            "sequenceChartType": "line",
+            "scientificNotation": true,
+            "openThousandsSeparator": true
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Overview"
+        },
+        "name": "Total Number of Traces",
+        "pos": {
+          "h": 18,
+          "w": 6,
+          "x": 12,
+          "y": 0
+        },
+        "type": "singlestat",
+        "queries": [
+          {
+            "name": "",
+            "type": "singlestat",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "series_sum(\"T::RE(`.*`):(count(`trace_id`)) { `gen_ai_application_name` != 'null' } BY `gen_ai_application_name`\")",
+              "code": "A",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": "trace_id",
+              "rollup": "",
+              "search": "",
+              "filters": [
+                {
+                  "id": "af0217f0-71d8-11f0-a679-650d1a07bd08",
+                  "op": "!=",
+                  "name": "gen_ai_application_name",
+                  "type": "keyword",
+                  "logic": "and",
+                  "value": "null",
+                  "values": []
+                }
+              ],
+              "groupBy": [
+                "gen_ai_application_name"
+              ],
+              "funcList": [],
+              "fieldFunc": "count",
+              "fieldType": "keyword",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [
+                {
+                  "args": [],
+                  "name": "series_sum"
+                }
+              ],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "bgColor": "",
+            "mappings": [],
+            "showLine": false,
+            "unitType": "global",
+            "fixedTime": "",
+            "fontColor": "",
+            "lineColor": "#3AB8FF",
+            "precision": "2",
+            "showTitle": true,
+            "titleDesc": "This chart displays the total count of span IDs grouped by Gen AI application names. The data is filtered to exclude entries where the Gen AI application name is 'null'. The series_sum function is used to calculate the sum of counts for each application name.",
+            "downsample": "last",
+            "globalUnit": [
+              "custom",
+              "spans"
+            ],
+            "isSampling": true,
+            "compareType": "",
+            "openCompare": false,
+            "showLineAxis": false,
+            "timeInterval": "auto",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "currentChartType": "singlestat",
+            "showFieldMapping": false,
+            "sequenceChartType": "line",
+            "scientificNotation": true,
+            "openThousandsSeparator": true
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Overview"
+        },
+        "name": "Total Number of Spans",
+        "pos": {
+          "h": 18,
+          "w": 6,
+          "x": 18,
+          "y": 0
+        },
+        "type": "singlestat",
+        "queries": [
+          {
+            "name": "",
+            "type": "singlestat",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "series_sum(\"T::RE(`.*`):(count(`span_id`)) { `gen_ai_application_name` != 'null' } BY `gen_ai_application_name`\")",
+              "code": "A",
+              "fill": "",
+              "type": "simple",
+              "alias": "",
+              "field": "span_id",
+              "rollup": "",
+              "search": "",
+              "filters": [
+                {
+                  "id": "a3eabcf0-71d8-11f0-a679-650d1a07bd08",
+                  "op": "!=",
+                  "name": "gen_ai_application_name",
+                  "type": "keyword",
+                  "logic": "and",
+                  "value": "null",
+                  "values": []
+                }
+              ],
+              "groupBy": [
+                "gen_ai_application_name"
+              ],
+              "funcList": [],
+              "fieldFunc": "count",
+              "fieldType": "keyword",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [
+                {
+                  "args": [],
+                  "name": "series_sum"
+                }
+              ],
+              "groupByTime": "",
+              "indexFilter": "",
+              "additionalFields": null
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "bgColor": "",
+            "mappings": [],
+            "showLine": false,
+            "unitType": "global",
+            "fixedTime": "",
+            "fontColor": "",
+            "lineColor": "#3AB8FF",
+            "precision": "2",
+            "showTitle": true,
+            "titleDesc": "Assumes US$0.03 per 1K tokens.",
+            "downsample": "last",
+            "globalUnit": [
+              "currencySymbol",
+              "usd"
+            ],
+            "isSampling": true,
+            "compareType": "",
+            "openCompare": false,
+            "showLineAxis": false,
+            "timeInterval": "auto",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "currentChartType": "singlestat",
+            "showFieldMapping": false,
+            "sequenceChartType": "line",
+            "scientificNotation": true,
+            "openThousandsSeparator": true
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Overview"
+        },
+        "name": "Estimated Total LLM Cost",
+        "pos": {
+          "h": 19,
+          "w": 6,
+          "x": 0,
+          "y": 18
+        },
+        "type": "singlestat",
+        "queries": [
+          {
+            "name": "",
+            "type": "singlestat",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "eval((A/1000)*0.03, A=\"T::RE(`.*`):(sum(`gen_ai_usage_total_tokens`))\")",
+              "code": "A",
+              "type": "expression",
+              "alias": "",
+              "children": [
+                {
+                  "q": "T::RE(`.*`):(sum(`gen_ai_usage_total_tokens`))",
+                  "code": "A",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "gen_ai_usage_total_tokens",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [],
+                  "groupBy": [],
+                  "fieldFunc": "sum",
+                  "fieldType": "long",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                }
+              ],
+              "funcList": [],
+              "expression": "(A/1000)*0.03"
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "bgColor": "",
+            "mappings": [],
+            "showLine": false,
+            "unitType": "global",
+            "fixedTime": "",
+            "fontColor": "",
+            "lineColor": "#3AB8FF",
+            "precision": "2",
+            "showTitle": true,
+            "titleDesc": "This singlestat chart displays the ratio of output tokens to total tokens generated by Gen AI applications. The metric is calculated by dividing the sum of 'gen_ai_usage_output_tokens' by the sum of 'gen_ai_usage_total_tokens' across all applications. It provides a quick overview of the efficiency or output rate in token generation.",
+            "downsample": "last",
+            "globalUnit": [
+              "percent",
+              "percent_decimal"
+            ],
+            "isSampling": true,
+            "compareType": "",
+            "openCompare": false,
+            "showLineAxis": false,
+            "timeInterval": "auto",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "currentChartType": "singlestat",
+            "showFieldMapping": false,
+            "sequenceChartType": "line",
+            "scientificNotation": true,
+            "openThousandsSeparator": true
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Overview"
+        },
+        "name": "Completion % of Total Tokens",
+        "pos": {
+          "h": 19,
+          "w": 6,
+          "x": 18,
+          "y": 18
+        },
+        "type": "singlestat",
+        "queries": [
+          {
+            "name": "",
+            "type": "singlestat",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "eval(A/B, A=\"T::RE(`.*`):(sum(`gen_ai_usage_output_tokens`)) { `gen_ai_application_name` = '#{gen_ai_application_name}' }\", B=\"T::RE(`.*`):(sum(`gen_ai_usage_total_tokens`)) { `gen_ai_application_name` = '#{gen_ai_application_name}' }\")",
+              "code": "A",
+              "type": "expression",
+              "alias": "",
+              "children": [
+                {
+                  "q": "T::RE(`.*`):(sum(`gen_ai_usage_output_tokens`)) { `gen_ai_application_name` = '#{gen_ai_application_name}' }",
+                  "code": "A",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "gen_ai_usage_output_tokens",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [
+                    {
+                      "id": "215a06d0-71db-11f0-a679-650d1a07bd08",
+                      "op": "=",
+                      "name": "gen_ai_application_name",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "#{gen_ai_application_name}",
+                      "values": []
+                    }
+                  ],
+                  "groupBy": [],
+                  "fieldFunc": "sum",
+                  "fieldType": "long",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                },
+                {
+                  "q": "T::RE(`.*`):(sum(`gen_ai_usage_total_tokens`)) { `gen_ai_application_name` = '#{gen_ai_application_name}' }",
+                  "code": "B",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "gen_ai_usage_total_tokens",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [
+                    {
+                      "id": "215a06d0-71db-11f0-a679-650d1a07bd08",
+                      "op": "=",
+                      "name": "gen_ai_application_name",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "#{gen_ai_application_name}",
+                      "values": []
+                    }
+                  ],
+                  "groupBy": [],
+                  "fieldFunc": "sum",
+                  "fieldType": "long",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                }
+              ],
+              "funcList": [],
+              "expression": "A/B"
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "slimit": 20,
+            "lineType": "linear",
+            "showLine": false,
+            "unitType": "global",
+            "chartType": "areaLine",
+            "fixedTime": "",
+            "isPercent": false,
+            "openStack": false,
+            "precision": "2",
+            "showLabel": false,
+            "showTitle": true,
+            "stackType": "time",
+            "titleDesc": "",
+            "globalUnit": [],
+            "isSampling": true,
+            "compareType": [],
+            "openCompare": false,
+            "yAxixMaxVal": null,
+            "yAxixMinVal": null,
+            "connectNulls": true,
+            "legendValues": "",
+            "timeInterval": "auto",
+            "legendPostion": "none",
+            "maxPointCount": null,
+            "sorderByOrder": "desc",
+            "xAxisShowType": "time",
+            "isTimeInterval": true,
+            "changeWorkspace": false,
+            "currentChartType": "sequence",
+            "showFieldMapping": false,
+            "onlyShowGroupName": false,
+            "scientificNotation": true,
+            "openThousandsSeparator": true,
+            "mainMeasurementQueryCode": "B"
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Tokens"
+        },
+        "name": "LLM Span Error Rate by App",
+        "pos": {
+          "h": 15,
+          "w": 12,
+          "x": 12,
+          "y": 60
+        },
+        "type": "sequence",
+        "queries": [
+          {
+            "name": "",
+            "type": "sequence",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "eval(A/B, A=\"T::RE(`.*`):(count(`*`)) { `status` = 'error' and `gen_ai_request_model` != 'null' and `gen_ai_application_name` = '#{gen_ai_application_name}' } BY `gen_ai_application_name`\", B=\"T::RE(`.*`):(count(`*`)) { `gen_ai_request_model` != 'null' and `gen_ai_application_name` = '#{gen_ai_application_name}' } BY `gen_ai_application_name`\")",
+              "code": "B",
+              "type": "expression",
+              "alias": "",
+              "children": [
+                {
+                  "q": "T::RE(`.*`):(count(`*`)) { `status` = 'error' and `gen_ai_request_model` != 'null' and `gen_ai_application_name` = '#{gen_ai_application_name}' } BY `gen_ai_application_name`",
+                  "code": "A",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "*",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [
+                    {
+                      "id": "dfa826f0-71d4-11f0-a679-650d1a07bd08",
+                      "op": "=",
+                      "name": "status",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "error",
+                      "values": []
+                    },
+                    {
+                      "id": "e9944860-71d4-11f0-a679-650d1a07bd08",
+                      "op": "!=",
+                      "name": "gen_ai_request_model",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "null",
+                      "values": []
+                    },
+                    {
+                      "id": "7843a140-71db-11f0-a679-650d1a07bd08",
+                      "op": "=",
+                      "name": "gen_ai_application_name",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "#{gen_ai_application_name}",
+                      "values": []
+                    }
+                  ],
+                  "groupBy": [
+                    "gen_ai_application_name"
+                  ],
+                  "funcList": [],
+                  "fieldFunc": "count",
+                  "fieldType": "keyword",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                },
+                {
+                  "q": "T::RE(`.*`):(count(`*`)) { `gen_ai_request_model` != 'null' and `gen_ai_application_name` = '#{gen_ai_application_name}' } BY `gen_ai_application_name`",
+                  "code": "B",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "*",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [
+                    {
+                      "id": "f4fafbe0-71d4-11f0-a679-650d1a07bd08",
+                      "op": "!=",
+                      "name": "gen_ai_request_model",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "null",
+                      "values": []
+                    },
+                    {
+                      "id": "8008eb10-71db-11f0-a679-650d1a07bd08",
+                      "op": "=",
+                      "name": "gen_ai_application_name",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "#{gen_ai_application_name}",
+                      "values": []
+                    }
+                  ],
+                  "groupBy": [
+                    "gen_ai_application_name"
+                  ],
+                  "funcList": [],
+                  "fieldFunc": "count",
+                  "fieldType": "keyword",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                }
+              ],
+              "funcList": [],
+              "expression": "A/B"
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [
+              {
+                "key": "trace_id",
+                "name": "trace_id",
+                "alias": "Trace ID"
+              },
+              {
+                "key": "start",
+                "name": "start",
+                "alias": "Time"
+              },
+              {
+                "key": "service",
+                "name": "service",
+                "alias": "App Name"
+              },
+              {
+                "key": "gen_ai_system",
+                "name": "gen_ai_system",
+                "alias": "System Prompt"
+              },
+              {
+                "key": "duration",
+                "name": "duration",
+                "alias": "Duration"
+              },
+              {
+                "key": "gen_ai_request_model",
+                "name": "gen_ai_request_model",
+                "alias": "Model Name"
+              },
+              {
+                "key": "gen_ai_request_temperature",
+                "name": "gen_ai_request_temperature",
+                "alias": "Temperature"
+              },
+              {
+                "key": "gen_ai_usage_input_tokens",
+                "name": "gen_ai_usage_input_tokens",
+                "alias": "Input Tokens"
+              },
+              {
+                "key": "gen_ai_usage_output_tokens",
+                "name": "gen_ai_usage_output_tokens",
+                "alias": "Output Tokens"
+              },
+              {
+                "key": "gen_ai_usage_total_tokens",
+                "name": "gen_ai_usage_total_tokens",
+                "alias": "Total Tokens"
+              },
+              {
+                "key": "gen_ai_prompt",
+                "name": "gen_ai_prompt",
+                "alias": "Prompt"
+              },
+              {
+                "key": "gen_ai_completion",
+                "name": "gen_ai_completion",
+                "alias": "Output"
+              }
+            ],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "slimit": 20,
+            "pageSize": 0,
+            "unitType": "global",
+            "fixedTime": "",
+            "precision": "2",
+            "queryMode": "toGroupColumn",
+            "showTitle": true,
+            "titleDesc": "",
+            "globalUnit": [],
+            "isSampling": true,
+            "pageEnable": false,
+            "showColumns": [],
+            "valMappings": [],
+            "aliasVersion": 2,
+            "columnsWidth": [
+              {
+                "field": "time",
+                "width": 192
+              },
+              {
+                "field": "gen_ai_prompt{\"gen_ai_application_name\": \"ollama-proxy\"}",
+                "width": 771
+              }
+            ],
+            "timeInterval": "auto",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "disableFuncList": false,
+            "currentChartType": "table",
+            "showFieldMapping": false,
+            "valColorMappings": [],
+            "scientificNotation": true,
+            "mainMeasurementSort": "top",
+            "mainMeasurementField": "gen_ai_prompt",
+            "mainMeasurementLimit": 20,
+            "openThousandsSeparator": false,
+            "mainMeasurementQueryCode": "A"
+          },
+          "fixedTime": ""
+        },
+        "group": {
+          "name": "LLM Call History"
+        },
+        "name": "History",
+        "pos": {
+          "h": 20,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "type": "table",
+        "queries": [
+          {
+            "name": "",
+            "type": "table",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(start,service,gen_ai_system,duration,gen_ai_request_model,gen_ai_request_temperature,gen_ai_usage_input_tokens,gen_ai_usage_output_tokens,gen_ai_usage_total_tokens,gen_ai_prompt,gen_ai_completion) { `gen_ai_prompt` != null } BY `trace_id`\n",
+              "code": "A",
+              "fill": null,
+              "type": "dql",
+              "alias": "",
+              "field": "start",
+              "index": "default",
+              "limit": null,
+              "fields": [
+                {
+                  "alias": "",
+                  "field": "start",
+                  "fieldFunc": ""
+                },
+                {
+                  "alias": "",
+                  "field": "service",
+                  "fieldFunc": ""
+                },
+                {
+                  "alias": "",
+                  "field": "gen_ai_system",
+                  "fieldFunc": ""
+                },
+                {
+                  "alias": "",
+                  "field": "duration",
+                  "fieldFunc": ""
+                },
+                {
+                  "alias": "",
+                  "field": "gen_ai_request_model",
+                  "fieldFunc": ""
+                },
+                {
+                  "alias": "",
+                  "field": "gen_ai_request_temperature",
+                  "fieldFunc": ""
+                },
+                {
+                  "alias": "",
+                  "field": "gen_ai_usage_input_tokens",
+                  "fieldFunc": ""
+                },
+                {
+                  "alias": "",
+                  "field": "gen_ai_usage_output_tokens",
+                  "fieldFunc": ""
+                },
+                {
+                  "alias": "",
+                  "field": "gen_ai_usage_total_tokens",
+                  "fieldFunc": ""
+                },
+                {
+                  "alias": "",
+                  "field": "gen_ai_prompt",
+                  "fieldFunc": ""
+                },
+                {
+                  "alias": "",
+                  "field": "gen_ai_completion",
+                  "fieldFunc": ""
+                }
+              ],
+              "slimit": null,
+              "fillNum": null,
+              "filters": [
+                {
+                  "op": "!=",
+                  "name": "gen_ai_prompt",
+                  "type": "",
+                  "logic": "and",
+                  "value": null,
+                  "values": []
+                }
+              ],
+              "groupBy": [
+                "trace_id"
+              ],
+              "indexes": [
+                "default"
+              ],
+              "labelOp": "",
+              "funcList": [],
+              "interval": "",
+              "fieldFunc": "",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "withLabels": [],
+              "groupByTime": "",
+              "indexFilter": "default",
+              "dataSourceFunc": "re"
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [
+              {
+                "key": "(A / 1000) * 0.03",
+                "name": "(A / 1000) * 0.03",
+                "alias": "{{service}}"
+              }
+            ],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "slimit": 20,
+            "unitType": "global",
+            "chartType": "pie",
+            "fixedTime": "",
+            "precision": "2",
+            "showTitle": true,
+            "titleDesc": "This pie chart illustrates the distribution of token usage across different generative AI applications. The data is calculated by evaluating (total tokens/1000)*0.03 for each application, where total tokens are summed by application name. The visualization helps understand the proportional contribution of each application to the overall token consumption.",
+            "globalUnit": [
+              "currencySymbol",
+              "usd"
+            ],
+            "isSampling": true,
+            "otherColor": "#F56610",
+            "aliasVersion": 2,
+            "timeInterval": "auto",
+            "enableCombine": true,
+            "legendPostion": "bottom",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "currentChartType": "pie",
+            "showFieldMapping": false,
+            "onlyShowGroupName": false,
+            "scientificNotation": true,
+            "mainMeasurementSort": "top",
+            "mainMeasurementLimit": 20,
+            "openThousandsSeparator": true,
+            "chartCombineDefaultColor": "#F56610",
+            "mainMeasurementQueryCode": "B"
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Overview"
+        },
+        "name": "LLM Cost Breakdown by App",
+        "pos": {
+          "h": 19,
+          "w": 6,
+          "x": 6,
+          "y": 18
+        },
+        "type": "pie",
+        "queries": [
+          {
+            "name": "",
+            "type": "pie",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "eval((A/1000)*0.03, A=\"T::RE(`.*`):(sum(`gen_ai_usage_total_tokens`)) { `service` = 'ollama-proxy' or `service` = 'ollama-demo' } BY `service`\")",
+              "code": "B",
+              "type": "expression",
+              "alias": "",
+              "children": [
+                {
+                  "q": "T::RE(`.*`):(sum(`gen_ai_usage_total_tokens`)) { `service` = 'ollama-proxy' or `service` = 'ollama-demo' } BY `service`",
+                  "code": "A",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "gen_ai_usage_total_tokens",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [
+                    {
+                      "id": "e29e70a0-71e1-11f0-a679-650d1a07bd08",
+                      "op": "=",
+                      "name": "service",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "ollama-proxy",
+                      "values": []
+                    },
+                    {
+                      "id": "e8825040-71e1-11f0-a679-650d1a07bd08",
+                      "op": "=",
+                      "name": "service",
+                      "type": "keyword",
+                      "logic": "or",
+                      "value": "ollama-demo",
+                      "values": []
+                    }
+                  ],
+                  "groupBy": [
+                    "service"
+                  ],
+                  "funcList": [],
+                  "fieldFunc": "sum",
+                  "fieldType": "long",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                }
+              ],
+              "funcList": [],
+              "expression": "(A/1000)*0.03"
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      },
+      {
+        "extend": {
+          "settings": {
+            "alias": [],
+            "units": [],
+            "colors": [],
+            "levels": [],
+            "bgColor": "",
+            "mappings": [],
+            "showLine": false,
+            "unitType": "global",
+            "fixedTime": "",
+            "fontColor": "",
+            "lineColor": "#3AB8FF",
+            "precision": "2",
+            "showTitle": true,
+            "titleDesc": "This chart displays the ratio of AI input tokens to total tokens used across different applications. By evaluating the sum of input tokens (A) over the sum of total tokens (B), it provides insights into the efficiency of token usage in generative AI applications.",
+            "downsample": "last",
+            "globalUnit": [
+              "percent",
+              "percent_decimal"
+            ],
+            "isSampling": true,
+            "compareType": "",
+            "openCompare": false,
+            "showLineAxis": false,
+            "timeInterval": "auto",
+            "isTimeInterval": false,
+            "changeWorkspace": false,
+            "currentChartType": "singlestat",
+            "showFieldMapping": false,
+            "sequenceChartType": "line",
+            "scientificNotation": true,
+            "openThousandsSeparator": true
+          },
+          "fixedTime": "",
+          "isRefresh": false
+        },
+        "group": {
+          "name": "Overview"
+        },
+        "name": "Prompt % of Total Tokens",
+        "pos": {
+          "h": 19,
+          "w": 6,
+          "x": 12,
+          "y": 18
+        },
+        "type": "singlestat",
+        "queries": [
+          {
+            "name": "",
+            "type": "singlestat",
+            "unit": "",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "eval(A/B, A=\"T::RE(`.*`):(sum(`gen_ai_usage_input_tokens`)) { `gen_ai_application_name` = '#{gen_ai_application_name}' }\", B=\"T::RE(`.*`):(sum(`gen_ai_usage_total_tokens`)) { `gen_ai_application_name` = '#{gen_ai_application_name}' }\")",
+              "code": "A",
+              "type": "expression",
+              "alias": "",
+              "children": [
+                {
+                  "q": "T::RE(`.*`):(sum(`gen_ai_usage_input_tokens`)) { `gen_ai_application_name` = '#{gen_ai_application_name}' }",
+                  "code": "A",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "gen_ai_usage_input_tokens",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [
+                    {
+                      "id": "215a06d0-71db-11f0-a679-650d1a07bd08",
+                      "op": "=",
+                      "name": "gen_ai_application_name",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "#{gen_ai_application_name}",
+                      "values": []
+                    }
+                  ],
+                  "groupBy": [],
+                  "fieldFunc": "sum",
+                  "fieldType": "long",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                },
+                {
+                  "q": "T::RE(`.*`):(sum(`gen_ai_usage_total_tokens`)) { `gen_ai_application_name` = '#{gen_ai_application_name}' }",
+                  "code": "B",
+                  "fill": "",
+                  "type": "simple",
+                  "alias": "",
+                  "field": "gen_ai_usage_total_tokens",
+                  "rollup": "",
+                  "search": "",
+                  "filters": [
+                    {
+                      "id": "215a06d0-71db-11f0-a679-650d1a07bd08",
+                      "op": "=",
+                      "name": "gen_ai_application_name",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "#{gen_ai_application_name}",
+                      "values": []
+                    }
+                  ],
+                  "groupBy": [],
+                  "fieldFunc": "sum",
+                  "fieldType": "long",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "groupByTime": "",
+                  "indexFilter": "",
+                  "additionalFields": null
+                }
+              ],
+              "funcList": [],
+              "expression": "A/B"
+            },
+            "datasource": "dataflux"
+          }
+        ]
+      }
+    ],
+    "groups": [
+      {
+        "name": "Overview",
+        "extend": {
+          "colorKey": "style_key3"
+        }
+      },
+      {
+        "name": "Tokens",
+        "extend": {
+          "colorKey": "style_key3"
+        }
+      },
+      {
+        "name": "LLM Call History",
+        "extend": {
+          "colorKey": "style_key3"
+        }
+      }
+    ],
+    "type": "template"
+  },
+  "identifier": ""
+}
