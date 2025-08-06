@@ -111,8 +111,11 @@ TrueWatch ships with a ready‑made dashboard that aggregates key LLM usage metr
 You may also import a pre-built custom dashboard that includes more metrics such as success/error rates, call response times, etc.
 
 1. Go to **Dashboards** → **Import Dashboard** → **Open** ``` llm-observability-demo-setup-guide/resources/LLM Observability (OpenLIT) Dashboard.json ```.
+2. Import Pipeline Script via **Management** → **Pipelines** → **Import** ``` llm-observability-demo-setup-guide/resources/Pipelines Template.json ```.
 
 ![Import Dashboard](./images/7.png)
+
+![Import Pipeline](./images/8.png)
 
 ![Custom Dashboard](./images/4.png)
 
