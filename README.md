@@ -41,11 +41,11 @@ Copy and overwrite the necessary configuration files from the cloned TrueWatch r
 ```bash
 cp -R llm-observability-demo-setup-guide/resources/datakit-config ./
 cp llm-observability-demo-setup-guide/resources/docker-compose.yaml ./
-cp llm-observability-demo-setup-guideo/resources/Dockerfile.proxy ./
+cp llm-observability-demo-setup-guide/resources/Dockerfile.proxy ./
 cp llm-observability-demo-setup-guide/resources/app.py ./
 ```
 
-Ensure your `docker-compose.yaml` includes your correct workspace token under the datakit service:
+Ensure your `docker-compose.yaml` includes your correct workspace token under the datakit service (line 564):
 
 ```yaml
 environment:
@@ -84,7 +84,7 @@ docker-compose up -d
 ## Step 8: View Observability Data in TrueWatch
 
 1. Log in to your TrueWatch account.  
-2. Navigate to **APM** → **Service List**.  
+2. Navigate to **APM** → **Traces**.  
 3. Filter services by `ollama-proxy` to view detailed traces and spans, including token usage and costs.
 
 ## Step 9: Explore APM Traces (placeholders for screenshots)
