@@ -518,12 +518,43 @@ x-shared-env: &shared-api-worker-env
 services:
   # The *real* Ollama engine, but *not* exposed on 11434
   real-ollama:
-    image: ollama/ollama:latest
-    container_name: real-ollama
-    volumes:
-      - ollama_data:/root/.ollama
-    networks:
-      - default
+  image: ollama/ollama:latest
+  container_name: real-ollama
+  volumes:
+    - ollama_data:/root/.ollama
+  environment:
+    - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3}
+  command:
+    - /bin/sh
+    - -lc
+    - |
+      set -eu
+      echo "[real-ollama] starting server..."
+      ollama serve & pid=$!
+      echo "[real-ollama] waiting for server to accept connections..."
+      until ollama list >/dev/null 2>&1; do
+        sleep 2
+      done
+      echo "[real-ollama] pulling model ${OLLAMA_MODEL:-llama3} (idempotent, may take a while)..."
+      n=0
+      until [ $n -ge 5 ]; do
+        if ollama pull "${OLLAMA_MODEL:-llama3}"; then
+          break
+        fi
+        n=$((n+1))
+        echo "[real-ollama] pull failed, retry $n/5 in 10s..."
+        sleep 10
+      done
+      echo "[real-ollama] model ready."
+      wait "$pid"
+  healthcheck:
+    test: ["CMD-SHELL", "ollama list | grep -w \"${OLLAMA_MODEL:-llama3}\" >/dev/null"]
+    interval: 10s
+    timeout: 5s
+    retries: 60
+    start_period: 1200s
+  networks:
+    - default
   
   # Your FastAPI proxy, *exposed* on 11434 as “ollama”
   ollama:
