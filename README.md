@@ -55,7 +55,7 @@ environment:
 ## Step 4: Deploy and Run Containers
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ## Step 5: Access and Configure Dify
