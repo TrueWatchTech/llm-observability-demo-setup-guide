@@ -60,11 +60,25 @@ docker compose up -d
 
 ## Step 5: Access and Configure Dify
 
-1. Open your browser and navigate to: `http://localhost`.  
-2. Create a workspace.
-3. Set up your LLM (Ollama):  
+1. Open your browser and navigate to: `http://localhost`. Furnish the details and create an account. 
+
+![Dify LLM Config](./images/9.png)
+
+2. Create an app workspace.
+
+![Dify LLM Config](./images/10.png)
+
+3. Configure model provider
+
+![Dify LLM Config](./images/11.png)
+
+![Dify LLM Config](./images/12.png)
+
+4. Set up your LLM (Ollama):  
    - Navigate to **Models** → **Add Model**.  
    - Configure your Ollama model URL (e.g., `http://ollama:11434`). Use default settings for the rest of the fields.
+
+![Dify LLM Config](./images/13.png)
 
 ![Dify LLM Config](./images/5.png)
 
@@ -125,6 +139,13 @@ You may also import a pre-built custom dashboard that includes more metrics such
 
 ```bash
 docker compose up -d --build ollama
+```
+
+### Llama3 Model Not Installed in real-ollama
+
+```bash
+docker exec -it real-ollama ollama pull llama3
+docker exec -it real-ollama ollama list
 ```
 
 ### Check Connectivity to Ollama Service
