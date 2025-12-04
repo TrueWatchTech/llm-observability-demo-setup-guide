@@ -43,9 +43,10 @@ cp -R llm-observability-demo-setup-guide/resources/datakit-config ./
 cp llm-observability-demo-setup-guide/resources/docker-compose.yaml ./
 cp llm-observability-demo-setup-guide/resources/Dockerfile.proxy ./
 cp llm-observability-demo-setup-guide/resources/app.py ./
+cp llm-observability-demo-setup-guide/resources/.env.example ./.env
 ```
 
-Ensure your `docker-compose.yaml` includes your correct workspace token under the datakit service (line 564):
+Ensure your `docker-compose.yaml` includes your correct workspace token under the datakit service (line 557):
 
 ```yaml
 environment:
